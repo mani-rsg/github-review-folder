@@ -1,0 +1,51 @@
+li.ActionList-item[data-tree-entry-type="directory"] button.ActionList-content{
+    grid-template-areas: "leadingAction leadingActionSpinner leadingActionAdditional leadingVisual label trailingVisual trailingAction";
+    grid-template-columns: min-content min-content min-content min-content minmax(0, auto) min-content min-content;
+}
+
+li.ActionList-item[data-tree-entry-type="directory"] .custom-view-checkbox{
+    grid-area: "leadingActionAdditional";
+    pointer-events: auto;
+}
+
+li.ActionList-item[data-tree-entry-type="directory"] .custom-spinner{
+    grid-area: "leadingActionSpinner";
+    min-height: unset;
+    margin-top: 3px;
+}
+
+form.js-toggle-user-reviewed-file-form .custom-spinner{
+    min-height: unset;
+    margin-right: 4px;
+}
+
+/* Keyframes Spin */
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Spinner */
+.custom-spinner {
+   
+	--spinner-color: #0969da;
+
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+
+	animation-name: spin;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+    width: 14px;
+	border: 3px solid var(--spinner-color);
+	border-top-color: transparent;
+	animation-duration: 1s;
+}
+
+.hide{
+    display: none !important;
+}

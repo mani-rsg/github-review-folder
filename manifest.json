@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Review Folder for Github",
+  "version": "1.0",
+  "description": "View all files under a certain folder when reviewing, with just a click",
+  "content_scripts": [
+    {
+      "css": [ "folder-view-content.css" ],
+      "js": [ "jquery.js", "template-utils.js", "folder-view-content.js" ],
+      "matches": [ "https://github.com/*" ]
+    }
+  ]
+}
