@@ -13,13 +13,14 @@
     let progressBar;
     let filesCount;
     let observer;
+    let sidebarObserver;
+    let isMainContentLoaded;
+    let isSidebarLoaded;
 
     $( document ).ready(function() {
         console.log( "hello Peter !" );
-        appendCheckboxes();
-        toggleSpinner(true);
-        initEvents();
         updateFilesCount();
+        initSidebarMutation();
         initMutationObserver();
     });
 
@@ -282,23 +283,57 @@
         observer.observe(nodeToObserve, {childList:true, subtree:true});
     }
 
+    function initSidebarMutation(){
+        let nodeToObserve = document.querySelector('.Layout-sidebar');
+        sidebarObserver = new MutationObserver(sidebarMutationCallback);
+        sidebarObserver.observe(nodeToObserve, {childList:true, subtree:true});
+    }
+
     function mutationCallback(mutations){
         console.log(mutations.length, 'new mutations');
         let files =  document.querySelectorAll(`input[id*="${FILE_SUFFIX}"]`);
         if(files.length === filesCount){
             observer.disconnect();
-            prependSpinners();
-            updateAllFilesStatus(files);
-            presetFolderStates();
-            toggleSpinner();
+            isMainContentLoaded = true;
+
+            if(isSidebarLoaded){
+                runPreConfigs();
+            }
         }
     }
 
-    function prependSpinners(){
+    function sidebarMutationCallback(mutations){
+        console.log(mutations.length, 'new mutations sidebar');
+        let files =  document.querySelectorAll(`li[id*=${FILE_DIFF_PREFIX}]`);
+        if(files.length === filesCount){
+            sidebarObserver.disconnect();
+            isSidebarLoaded = true;
+            initExtension();
+            if(isMainContentLoaded){
+                runPreConfigs();
+            }
+        }
+    }
+
+    function initExtension(){
+        appendCheckboxes();
+        toggleSpinner(true);
+        initEvents();
+    }
+
+    function runPreConfigs(){
+        updateAllFilesStatus();
+        presetFolderStates();
+        prependSpinnersToContentFiles();
+        toggleSpinner();
+    }
+
+    function prependSpinnersToContentFiles(){
         $('form label.js-reviewed-toggle').prepend(`<div class="custom-spinner ActionList-item-action hide"></div>`);
     }
 
-    function updateAllFilesStatus(files){
+    function updateAllFilesStatus(){
+        let files =  document.querySelectorAll(`input[id*="${FILE_SUFFIX}"]`);
         files.forEach(file=>allFilesStatus[file.id]=file.checked);
     }
 
