@@ -281,19 +281,21 @@
         let nodeToObserve = document.getElementById('files');
         observer = new MutationObserver(mutationCallback);
         observer.observe(nodeToObserve, {childList:true, subtree:true});
+        mutationCallback();
     }
 
     function initSidebarMutation(){
         let nodeToObserve = document.querySelector('.Layout-sidebar');
         sidebarObserver = new MutationObserver(sidebarMutationCallback);
         sidebarObserver.observe(nodeToObserve, {childList:true, subtree:true});
+        sidebarMutationCallback();
     }
 
     function mutationCallback(mutations){
-        console.log(mutations.length, 'new mutations');
+        console.log(mutations?.length, 'new mutations');
         let files =  document.querySelectorAll(`input[id*="${FILE_SUFFIX}"]`);
         if(files.length === filesCount){
-            observer.disconnect();
+            observer?.disconnect();
             isMainContentLoaded = true;
 
             if(isSidebarLoaded){
@@ -303,10 +305,10 @@
     }
 
     function sidebarMutationCallback(mutations){
-        console.log(mutations.length, 'new mutations sidebar');
+        console.log(mutations?.length, 'new mutations sidebar');
         let files =  document.querySelectorAll(`li[id*=${FILE_DIFF_PREFIX}]`);
         if(files.length === filesCount){
-            sidebarObserver.disconnect();
+            sidebarObserver?.disconnect();
             isSidebarLoaded = true;
             initExtension();
             if(isMainContentLoaded){
