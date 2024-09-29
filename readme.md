@@ -1,0 +1,1 @@
+Review all files in a folder with a single click
